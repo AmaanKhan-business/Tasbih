@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Tasbih</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-glow: rgba(201,168,76,0.35);
+    --black: #0A0A0A;
+    --black-mid: #141414;
+    --black-card: #1A1A1A;
+    --text-dim: rgba(201,168,76,0.45);
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+background: var(–black);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+font-family: ‘Cormorant Garamond’, serif;
+overflow: hidden;
+}
+
+.phone {
+width: 390px;
+height: 844px;
+background: var(–black);
+border-radius: 54px;
+border: 1.5px solid rgba(201,168,76,0.25);
+box-shadow:
+0 0 60px rgba(0,0,0,0.9),
+0 0 120px rgba(201,168,76,0.08),
+inset 0 0 40px rgba(0,0,0,0.5);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+position: relative;
+overflow: hidden;
+padding: 60px 30px 50px;
+}
+
+.phone::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 200 200’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+opacity: 0.3;
+pointer-events: none;
+z-index: 0;
+border-radius: 54px;
+}
+
+.glow-orb {
+position: absolute;
+width: 260px;
+height: 260px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+pointer-events: none;
+z-index: 0;
+}
+
+.label-top {
+font-family: ‘Cinzel’, serif;
+font-size: 11px;
+letter-spacing: 6px;
+color: var(–text-dim);
+text-transform: uppercase;
+z-index: 1;
+}
+
+.controls-row {
+display: flex;
+align-items: center;
+gap: 14px;
+z-index: 1;
+}
+
+.step-label {
+font-size: 10px;
+letter-spacing: 3px;
+color: var(–text-dim);
+font-family: ‘Cinzel’, serif;
+text-transform: uppercase;
+}
+
+.step-select {
+background: var(–black-card);
+border: 1px solid rgba(201,168,76,0.3);
+color: var(–gold);
+font-family: ‘Cinzel’, serif;
+font-size: 13px;
+padding: 8px 14px;
+border-radius: 40px;
+appearance: none;
+-webkit-appearance: none;
+cursor: pointer;
+outline: none;
+text-align: center;
+min-width: 70px;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.step-select:focus {
+border-color: var(–gold);
+box-shadow: 0 0 12px var(–gold-glow);
+}
+
+.counter-section {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+z-index: 1;
+}
+
+.counter-ring {
+width: 220px;
+height: 220px;
+border-radius: 50%;
+border: 1px solid rgba(201,168,76,0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+background: radial-gradient(circle at 40% 35%, rgba(201,168,76,0.06), transparent 60%);
+box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.4);
+}
+
+.counter-ring::before {
+content: ‘’;
+position: absolute;
+inset: 8px;
+border-radius: 50%;
+border: 1px solid rgba(201,168,76,0.1);
+}
+
+.counter-display {
+font-family: ‘Cinzel’, serif;
+font-size: 72px;
+font-weight: 700;
+color: var(–gold-light);
+text-shadow: 0 0 30px rgba(201,168,76,0.5), 0 0 60px rgba(201,168,76,0.2);
+letter-spacing: -2px;
+cursor: text;
+outline: none;
+text-align: center;
+transition: text-shadow 0.2s;
+border: none;
+background: transparent;
+width: 170px;
+-moz-appearance: textfield;
+}
+
+.counter-display::-webkit-inner-spin-button,
+.counter-display::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.counter-display:focus {
+text-shadow: 0 0 40px rgba(201,168,76,0.8), 0 0 80px rgba(201,168,76,0.4);
+}
+
+.tap-hint {
+font-size: 10px;
+letter-spacing: 4px;
+color: var(–text-dim);
+font-family: ‘Cinzel’, serif;
+text-transform: uppercase;
+opacity: 0.6;
+}
+
+.buttons-row {
+display: flex;
+gap: 28px;
+align-items: center;
+z-index: 1;
+}
+
+.btn {
+width: 130px;
+height: 130px;
+border-radius: 50%;
+border: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Cinzel’, serif;
+font-size: 36px;
+transition: all 0.15s ease;
+position: relative;
+outline: none;
+user-select: none;
+-webkit-user-select: none;
+}
+
+.btn-increase {
+background: linear-gradient(145deg, #C9A84C, #9A7A30);
+color: var(–black);
+box-shadow:
+0 8px 30px rgba(201,168,76,0.4),
+0 2px 8px rgba(0,0,0,0.5),
+inset 0 1px 1px rgba(255,255,255,0.15);
+font-weight: 700;
+}
+
+.btn-increase:active {
+transform: scale(0.93);
+box-shadow: 0 3px 14px rgba(201,168,76,0.3), inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.btn-decrease {
+background: var(–black-card);
+color: var(–gold);
+border: 1.5px solid rgba(201,168,76,0.35);
+box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(201,168,76,0.05);
+}
+
+.btn-decrease:active {
+transform: scale(0.93);
+box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+background: #1f1f1f;
+}
+
+.reset-btn {
+background: none;
+border: 1px solid rgba(201,168,76,0.1);
+color: var(–text-dim);
+font-family: ‘Cinzel’, serif;
+font-size: 10px;
+letter-spacing: 4px;
+text-transform: uppercase;
+cursor: pointer;
+z-index: 1;
+padding: 8px 20px;
+border-radius: 30px;
+transition: all 0.2s;
+outline: none;
+}
+
+.reset-btn:active {
+color: var(–gold);
+border-color: rgba(201,168,76,0.35);
+}
+
+@keyframes pulse-ring {
+0% { transform: scale(1); opacity: 0.6; }
+100% { transform: scale(1.15); opacity: 0; }
+}
+
+.pulse { animation: pulse-ring 0.35s ease-out forwards; }
+
+.pulse-effect {
+position: absolute;
+inset: -4px;
+border-radius: 50%;
+border: 2px solid var(–gold);
+pointer-events: none;
+}
+
+.ornament {
+display: flex;
+gap: 6px;
+align-items: center;
+z-index: 1;
+}
+
+.ornament-dot {
+width: 4px; height: 4px;
+border-radius: 50%;
+background: rgba(201,168,76,0.3);
+}
+
+.ornament-dot.center {
+width: 6px; height: 6px;
+background: rgba(201,168,76,0.6);
+}
+
+.status-flash {
+position: absolute;
+bottom: 120px;
+font-family: ‘Cinzel’, serif;
+font-size: 9px;
+letter-spacing: 5px;
+color: var(–gold);
+text-transform: uppercase;
+opacity: 0;
+transition: opacity 0.3s;
+z-index: 2;
+}
+
+.status-flash.show { opacity: 1; }
+</style>
+
+</head>
+<body>
+<div class="phone">
+  <div class="glow-orb"></div>
+
+<span class="label-top">Tasbih</span>
+
+  <div class="controls-row">
+    <span class="step-label">Step</span>
+    <select class="step-select" id="stepSelect">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="33">33</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+
+  <div class="counter-section">
+    <div class="counter-ring" id="counterRing">
+      <input
+        type="number"
+        class="counter-display"
+        id="counter"
+        value="0"
+        inputmode="numeric"
+      />
+    </div>
+    <span class="tap-hint">tap to edit</span>
+  </div>
+
+  <div class="buttons-row">
+    <button class="btn btn-decrease" id="btnDec" aria-label="Decrease">−</button>
+    <button class="btn btn-increase" id="btnInc" aria-label="Increase">+</button>
+  </div>
+
+<button class="reset-btn" id="resetBtn">Reset</button>
+
+  <div class="ornament">
+    <div class="ornament-dot"></div>
+    <div class="ornament-dot"></div>
+    <div class="ornament-dot center"></div>
+    <div class="ornament-dot"></div>
+    <div class="ornament-dot"></div>
+  </div>
+
+  <div class="status-flash" id="statusFlash">Saved</div>
+</div>
+
+<script>
+  const counterEl   = document.getElementById('counter');
+  const stepSelect  = document.getElementById('stepSelect');
+  const btnInc      = document.getElementById('btnInc');
+  const btnDec      = document.getElementById('btnDec');
+  const resetBtn    = document.getElementById('resetBtn');
+  const statusFlash = document.getElementById('statusFlash');
+  const counterRing = document.getElementById('counterRing');
+
+  const KEY = 'tasbih-v1';
+  let saveTimer, flashTimer;
+
+  /* ── Persistent storage (survives phone off / browser close) ── */
+  async function load() {
+    try {
+      const result = await window.storage.get(KEY);
+      if (result && result.value) {
+        const d = JSON.parse(result.value);
+        counterEl.value  = d.count  ?? 0;
+        stepSelect.value = d.step   ?? '1';
+      }
+    } catch (_) {
+      counterEl.value = 0;
+    }
+  }
+
+  async function save() {
+    try {
+      await window.storage.set(KEY, JSON.stringify({
+        count: parseInt(counterEl.value) || 0,
+        step:  stepSelect.value
+      }));
+      flash('Saved');
+    } catch (_) {
+      flash('Error');
+    }
+  }
+
+  function debounceSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(save, 350);
+  }
+
+  function flash(msg) {
+    clearTimeout(flashTimer);
+    statusFlash.textContent = msg;
+    statusFlash.classList.add('show');
+    flashTimer = setTimeout(() => statusFlash.classList.remove('show'), 1400);
+  }
+
+  /* ── UI helpers ── */
+  function pulseRing() {
+    const el = document.createElement('div');
+    el.className = 'pulse-effect pulse';
+    counterRing.appendChild(el);
+    setTimeout(() => el.remove(), 400);
+  }
+
+  /* ── Events ── */
+  btnInc.addEventListener('click', () => {
+    const step = parseInt(stepSelect.value) || 1;
+    counterEl.value = (parseInt(counterEl.value) || 0) + step;
+    pulseRing();
+    if (navigator.vibrate) navigator.vibrate(20);
+    debounceSave();
+  });
+
+  btnDec.addEventListener('click', () => {
+    const step = parseInt(stepSelect.value) || 1;
+    counterEl.value = Math.max(0, (parseInt(counterEl.value) || 0) - step);
+    if (navigator.vibrate) navigator.vibrate(20);
+    debounceSave();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    counterEl.value = 0;
+    debounceSave();
+  });
+
+  stepSelect.addEventListener('change', debounceSave);
+
+  counterEl.addEventListener('change', () => {
+    if (parseInt(counterEl.value) < 0) counterEl.value = 0;
+    debounceSave();
+  });
+
+  /* ── Init ── */
+  load();
+</script>
+
+</body>
+</html>
